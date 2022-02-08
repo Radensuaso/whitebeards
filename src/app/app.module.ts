@@ -5,11 +5,10 @@ import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "./core/core.module";
 import { SharedModule } from "./shared/shared.module";
+import { UsersModule } from "./users/users.module";
 import { CatalogModule } from "./catalog/catalog.module";
 import { AppComponent } from "./app.component";
 import { appRoutes } from "./routes";
-import { RegisterComponent } from "./users/register.component";
-import { SignInComponent } from "./users/sign-in.component";
 
 @NgModule({
   imports: [
@@ -19,9 +18,10 @@ import { SignInComponent } from "./users/sign-in.component";
     CoreModule,
     SharedModule,
     CatalogModule,
+    UsersModule,
     RouterModule.forRoot(appRoutes),
   ],
-  declarations: [AppComponent, RegisterComponent, SignInComponent],
+  declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
