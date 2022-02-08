@@ -2,14 +2,15 @@ import { Component } from "@angular/core";
 
 import { UserRepositoryService } from "../services/user-repository.service";
 import { CatalogRepositoryService } from "./catalog-repository.service";
+import { IClass } from "./class.model";
 
 @Component({
   styleUrls: ["./catalog.component.css"],
   templateUrl: "./catalog.component.html",
 })
 export class CatalogComponent {
-  classes: any[];
-  visibleClasses: any[];
+  classes: IClass[] = [];
+  visibleClasses: IClass[] = [];
 
   constructor(
     private catalogRepository: CatalogRepositoryService,
@@ -23,7 +24,7 @@ export class CatalogComponent {
     });
   }
 
-  enroll(classToEnroll) {
+  enroll(classToEnroll: IClass) {
     classToEnroll.processing = true;
     this.userRepository.enroll(classToEnroll.classId).subscribe(
       null,
@@ -38,7 +39,7 @@ export class CatalogComponent {
     );
   }
 
-  drop(classToDrop) {
+  drop(classToDrop: IClass) {
     classToDrop.processing = true;
     this.userRepository.drop(classToDrop.classId).subscribe(
       null,
@@ -53,20 +54,22 @@ export class CatalogComponent {
     );
   }
 
-  applyFilter(filter) {
+  applyFilter(filter: string) {
     if (!filter) return (this.visibleClasses = this.classes);
 
-    if (filter === "GEN") {
-      return (this.visibleClasses = this.classes.filter(
-        (c) =>
-          !c.course.courseNumber.startsWith("CH") &&
-          !c.course.courseNumber.startsWith("PO") &&
-          !c.course.courseNumber.startsWith("SP")
-      ));
-    }
+    if (filter === "GEN") return this.showOnlyGeneralCourses();
 
     return (this.visibleClasses = this.classes.filter((c) =>
       c.course.courseNumber.startsWith(filter)
+    ));
+  }
+
+  showOnlyGeneralCourses() {
+    return (this.visibleClasses = this.classes.filter(
+      (c) =>
+        !c.course.courseNumber.startsWith("CH") &&
+        !c.course.courseNumber.startsWith("PO") &&
+        !c.course.courseNumber.startsWith("SP")
     ));
   }
 }
